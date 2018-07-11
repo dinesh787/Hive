@@ -1,0 +1,309 @@
+--------------------------------------Hive------------------------------------
+
+CREATE TABLE `demotest`(
+  `name` string,
+  `id` bigint)
+  ROW FORMAT SERDE
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+  wasb://viacom18@viabiblsr.blob.core.windows.net/hive/warehouse/demotest;  
+
+--------------------------------------------------------------------------------------
+CREATE external TABLE `demotest`(
+  `name` string,
+  `id` bigint)
+ROW FORMAT SERDE
+  'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
+STORED AS INPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat'
+OUTPUTFORMAT
+  'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
+LOCATION
+'wasb://viacom18@viabiblsr.blob.core.windows.net/tmp/demotest';
+
+'wasb://viacom18@viabiblsr.blob.core.windows.net/hive/warehouse/'
+
+v18devdhilinbistor
+
+
+
+ insert into demotest values ('asd',3)
+
+select name from demotest group by name order by name ;
+
+select sum(id) from demotest group by name order by name ;
+  
+  
+  
+show create table  demotest;
+
+select * from demotest;
+insert into table demotest values ('vijay',87769);
+
+ select * from demotest limit 10;
+
+
+
+drop table demotest;
+
+
+
+
+select 
+case when genre = 'History' then  'ok' else 'Not ok' end ,
+genre,
+count(*) as c
+from adsales_content_mapper where genre in ('Animation','History','Music') group by genre order by c;
+----------------------------------------------orc---------------------------
+
+CREATE TABLE IF NOT EXISTS mycars(
+        Name STRING, 
+        Miles_per_Gallon INT,
+        Cylinders INT,
+        Displacement INT)
+       
+      ROW FORMAT DELIMITED
+    FIELDS TERMINATED BY ','
+    STORED AS ORC;
+
+insert into mycars values ( 'mahendra',25,6,27)
+
+-=-------------------------------------csv----------------------------
+create external table if not exists demotest3
+( 
+    DepartmentID smallint , 
+    Name string ,
+   GroupName string, 
+    rate_code string, 
+    ModifiedDate  timestamp ////how to write timestamp in 
+)   
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '","' lines terminated by '\n'
+STORED AS TEXTFILE 
+LOCATION 'wasb://viacom18@viabiblsr.blob.core.windows.net/tmp/demotest3';
+
+
+insert into demotest23 values (1,'Engineering','Research and Development','new','2008-04-30 00:00:00');
+
+
+create table  demotest5
+( 
+    DepartmentID smallint , 
+    Name string ,
+   GroupName string, 
+    rate_code string 
+  
+)   
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '","' 
+STORED AS TEXTFILE LOCATION 'wasb://viacom18@viabiblsr.blob.core.windows.net/tmp/demotest3'
+
+insert into demotest4 values(1,'Engineering','Research and Development','new');
+insert into demotest4 values(2,'Pharma','Bachalore of Pharma','old'),(3,'Art','B.ED','old');
+
+
+----------------------------------------partiation---------------------
+create table  demotest5
+( 
+    DepartmentID smallint , 
+     GroupName string, 
+    rate_code string 
+  
+)   
+PARTITIONED BY (  Name string )
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '","' 
+STORED AS TEXTFILE LOCATION 'wasb://viacom18@viabiblsr.blob.core.windows.net/tmp/demotest5'
+
+------------------1------------------------
+create table patient1(patient_id int, patient_name string, gender string, total_amount int, drug string) 
+row format delimited fields 
+terminated by ',' 
+stored as textfile
+LOCATION 'wasb://viacom18@viabiblsr.blob.core.windows.net/tmp/patient1';
+
+describe patient1
+
+
+--------------------------spark-------------------------
+
+spark-shell
+
+import org.apache.spark.sql.SparkSession
+
+
+
+val spark= SparkSession.builder.appName("test").enableHiveSupport().getOrCreate()  //session
+
+///-----read data from parquet file
+///-----AGG sparksql         
+///-----Insert sparksql
+
+
+val DF = spark.sqlContext.sql("SELECT * from demotest ")
+
+DF. (press tab)
+
+agg             count                     except             inputFiles      orderBy             sample                 take              where
+alias           createGlobalTempView      explain            intersect       persist             schema                 takeAsList        withColumn
+apply           createOrReplaceTempView   explode            isLocal         printSchema         select                 toDF              withColumnRenamed
+as              createTempView            filter             isStreaming     queryExecution      selectExpr             toJSON            withWatermark
+cache           crossJoin                 first              javaRDD         randomSplit         show                   toJavaRDD         write
+checkpoint      cube                      flatMap            join            randomSplitAsList   sort                   toLocalIterator   writeStream
+coalesce        describe                  foreach            joinWith        rdd                 sortWithinPartitions   toString
+col             distinct                  foreachPartition   limit           reduce              sparkSession           transform
+collect         drop                      groupBy            map             registerTempTable   sqlContext             union
+collectAsList   dropDuplicates            groupByKey         mapPartitions   repartition         stat                   unionAll
+columns         dtypes                    head               na              rollup              storageLevel           unpersist
+
+
+DF.printShema   
+DF.show
+DF.select("id").take(5).foreach(println)
+println is like sytem.out(output)
+forech :-print every element on console
+:q
+
+
+
+
+
+
+
+---------------------------------------------------------------------scala------------------------------------------------
+
+scala in not interpriter .it is complie language
+
+val = immutable (does not change)
+var = dynamic 
+
+var x: int =10
+var y: string = "dinesh";
+var y: float =10f
+var y: float =10
+var y: double = 10
+var y: boolean =True
+
+var x = 10(detect automatically int)
+var x = 10.9(detect automatically double)
+
+---------------------------------------for loop--------------
+
+scala> 1 to 5
+res2: scala.collection.immutable.Range.Inclusive = Range(1, 2, 3, 4, 5)
+
+scala> for (i <- 1 to 5)println(i)
+1
+2
+3
+4
+5
+
+scala> for (i <-5 to 1 by -1)println(i)
+5
+4
+3
+2
+1
+
+
+for (i <-1 to 5 ;j <-1 to 5 )println(s"($i,$j)")
+
+for (i <-1 to 5 ;j <- 1 to 5 if i==j )println(s"($i,$j)")
+even no:.
+for (i <-1 to 20 if i%2==0)println(i)
+
+odd no:
+for (i <-1 to 20 if i%2!=0)println(i)
+
+
+
+
+
+
+------------------------------Hadoop--------------------
+ask :-
+parquet
+ yield function
+import org.apache.spark.sql.SparkSession
+val spark = SparkSession.builder.appName("test").enableHiveSupport().getOrCreate()
+this is compalsory
+Jupyter notebook
+Dateset ,RDD , dataFrame    ....find different ?
+------------------------------Azure cloud...compennt.....
+
+..........................Project Build IntelliJ----------
+
+
+
+
+spark-submit --class com.viacom18.ShowJourney.showJourneyOrder --master yarn --deploy-mode cluster  /home/v18biprodssh/v18/voot/migration/newjars/Project_Pi-1.0-SNAPSHOT.jar "Weekly" "2018-04-01"  "2018-04-10" "Weekly"
+
+
+spark-submit --class example.test --master yarn --deploy-mode cluster  /home/biappadmin/CMS/test/Content-1.0-SNAPSHOT.jar
+
+
+spark-submit --class example.test --master yarn --deploy-mode cluster  /home/biappadmin/CMS/test/Content-1.0-SNAPSHOT.jar
+
+
+csv to parquet
+
+
+jar / Deploy / Run 
+
+---------------------------Schedule------------------------
+
+-------------------------Task-----------------------------
+
+!)  read write CSV
+
+val t = spark.read.csv("wasb://viacom18@viabiblsr.blob.core.windows.net/tmp/Book1.csv")
+
+import org.apache.spark.sql.SparkSession
+val spark= SparkSession.builder.appName("test").enableHiveSupport().getOrCreate()
+
+val sqlContext = new org.apache.spark.sql.SQLContext(sc)
+val dff=sqlContext.read.format("com.databricks.spark.csv").option("header", "true").load("wasb://viacom18@viabiblsr.blob.core.windows.net/tmp/Book1.csv")
+dff.createOrReplaceTempView("dff")
+spark.sqlContext.sql(" insert into samplecsvtable select * from  dff ")
+spark.sqlContext.sql(" select * from  samplecsvtable  ").take(100).foreach(println)
+
+
+@)  read write Parquet
+
+import org.apache.spark.sql.SparkSession
+val spark= SparkSession.builder.appName("test").enableHiveSupport().getOrCreate()
+val sqlContext = new org.apache.spark.sql.SQLContext(sc)
+
+val dff = sqlContext.read.parquet("wasb://viacom18@viabiblsr.blob.core.windows.net/tmp/demotest")
+dff.createOrReplaceTempView("dff")
+spark.sqlContext.sql(" insert into dff select * from  dff ")
+spark.sqlContext.sql(" select * from  dff  ").take(100).foreach(println)
+
+dff.show
+
+
+
+
+
+hdfs------------hadoopdb
+hive query---createtable---hdfs
+
+sparksql----------------hdfs----clode--hdinside(hadoop)
+scala table----
+
+dataframe,rdd,dataset.
+sapark context ani spark session;
+
+
+
+
+
+
+
+
+
+
+
+   

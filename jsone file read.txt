@@ -1,0 +1,10 @@
+jsone file read
+
+ import org.apache.spark.sql.{SQLContext, SparkSession}
+
+ val sqlcontext: SQLContext = spark.sqlContext
+
+val dfs = sqlcontext.read.json("C:/Users/indian/Desktop/json/example_1.json")
+
+dfs.printSchema()
+dfs.show()
